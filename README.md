@@ -1,1 +1,3 @@
-# STRAPI
+# React & Stripe
+
+React & Stripe
