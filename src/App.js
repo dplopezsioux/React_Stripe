@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import axios from "axios";
 
 import {
   Elements,
@@ -7,6 +8,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+
 import { loadStripe } from "@stripe/stripe-js";
 
 import "bootswatch/dist/darkly/bootstrap.min.css";
@@ -20,24 +22,42 @@ const MyCheckoutForm = () => {
   const elements = useElements();
 
   const handleSubmit = async (e) => {
-    e.priventDefault();
+    e.preventDefault();
+
+    console.log("!await stripe.createPaymentMethod({");
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardElement),
     });
+
+    console.log(" if (!error) {", paymentMethod, error);
+
+    if (!error) {
+      const { id } = paymentMethod;
+      console.log("const { data } = await axios.post(, {");
+      const { data } = await axios.post("http://localhost:3001/api/checkout", {
+        id,
+        //amount: 32000 * 100, example
+        amount: 2 * 100,
+      });
+
+      console.log(data);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="card card-body">
       <img
         src="https://www.cstatic-images.com/car-pictures/xl/usd10cht279b021001.png"
-        class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+        className="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
         alt=""
       ></img>
-
-      <CardElement />
-      <button>BUY</button>
+      <h3 className="text-center my-2">ONLY 32K $</h3>
+      <div className="form-group">
+        <CardElement className="form-control" />
+      </div>
+      <button className="btn btn-success">BUY</button>
     </form>
   );
 };
