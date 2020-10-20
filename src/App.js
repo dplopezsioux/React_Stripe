@@ -31,11 +31,13 @@ const MyCheckoutForm = () => {
       card: elements.getElement(CardElement),
     });
 
-    console.log(" if (!error) {", paymentMethod, error);
+    console.log(" ->>> if (!error) {", paymentMethod, error);
 
     if (!error) {
       const { id } = paymentMethod;
+
       console.log("const { data } = await axios.post(, {");
+
       const { data } = await axios.post("http://localhost:3001/api/checkout", {
         id,
         //amount: 32000 * 100, example
@@ -43,6 +45,8 @@ const MyCheckoutForm = () => {
       });
 
       console.log(data);
+
+      elements.getElement(CardElement).clear();
     }
   };
 

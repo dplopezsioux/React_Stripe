@@ -24,11 +24,10 @@ app.post("/api/checkout", async (req, res) => {
       confirm: true,
     });
 
-    res.send("ok");
+    res.send({ message: "ok" });
   } catch (error) {
     console.log(error);
-
-    res.send({ message: error.row.message });
+    res.send({ message: error.raw.message });
   }
 });
 
